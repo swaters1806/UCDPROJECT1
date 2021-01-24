@@ -1,5 +1,4 @@
 
-
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -64,13 +63,35 @@ sns.countplot(y = filtered_directors, order=filtered_directors.value_counts().in
 plt.xlabel('Releases')
 plt.show()
 
-#2. Gross income by the Amount of the films release
-value_prod = df_ucd_anal.set_index('title').worlwide_gross_income.reset_index(level=0);
-plt.figure(figsize=(18,7))
-g = sns.countplot(y = value_prod, order=value_prod.index[:15])
-plt.title('Top 15 Production Companies between 2010-2020')
-plt.xlabel('Titles')
-plt.ylabel('Production Company')
+
+#3. Number of releases per Calender year
+
+trop_prod_by_yeardf = df_ucd_anal.groupby(["year"])["worlwide_gross_income"].count().reset_index()
+print(trop_prod_by_yeardf.head())
+
+prodcomp_byrevenue = df_ucd_anal.groupby(["year"])["worlwide_gross_income"].sum().reset_index()
+print(prodcomp_byrevenue.head())
+
+#3updated. Number of releases per Calender year & Revenue. Two lines on one graph
+# create figure and axis objects with subplots()
+fig,ax = plt.subplots()
+ax.plot(prodcomp_byrevenue.year, prodcomp_byrevenue.worlwide_gross_income, color="red", marker="o")
+# set x-axis label
+ax.set_xlabel("year")
+# set y-axis label
+ax.set_ylabel("worlwide_gross_income(m)",color="red")
+# twin object for two different y-axis on the sample plot
+ax2=ax.twinx()
+# make a plot with different y-axis using second axis object
+ax2.plot(trop_prod_by_yeardf.year, trop_prod_by_yeardf.worlwide_gross_income,color="blue",marker="o")
+ax2.set_ylabel("No. of release",color="blue")
+ax2.set_title("Annual Revuenue & Output by Year")
 plt.show()
+
+
+
+
+
+
 
 
