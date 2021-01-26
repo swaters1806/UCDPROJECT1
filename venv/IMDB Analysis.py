@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import rc
 import seaborn as sns
 
 
@@ -17,7 +18,7 @@ print (df_2010_2020)
 
 ##Subset to areas for analysis - genres, producers, year,worldwide gross income
 
-df_ucd_anal = df_2010_2020[['genre', 'director', 'production_company', 'year', 'imdb_title_id', 'worlwide_gross_income', 'title']]
+df_ucd_anal = df_2010_2020[['genre', 'director', 'production_company', 'year', 'imdb_title_id', 'worlwide_gross_income', 'title', 'original_title']]
 print(df_ucd_anal.head)
 
 ##Check for missing data in df
@@ -38,12 +39,54 @@ prd_valuecheck = df_ucd_anal[["production_company", "worlwide_gross_income"]]
 print(prd_valuecheck.head())
 prd_valuechecksrt = prd_valuecheck.sort_values("worlwide_gross_income", ascending=False)
 print(prd_valuechecksrt.head())
-prd_valuechecksrt['WWGross_income_millions'] = df['worlwide_gross_income']/1000000
+prd_valuechecksrt['WWGross_income_millions'] = df_ucd_anal['worlwide_gross_income']/1000000
 print(prd_valuechecksrt.dtypes)
 
 
-Top_5_prod_com = prd_valuechecksrt.iloc[0:5, 0:4]
-print(Top_5_prod_com.head())
+
+Top_5_prod_com = prd_valuechecksrt.iloc[0:10,0:3]
+print(Top_5_prod_com.head(10))
+Top_5_prod_com['Total'] = prd_valuechecksrt.worlwide_gross_income.sum()
+print(Top_5_prod_com.head(10))
+
+
+a = prd_valuechecksrt.iloc[:3, [0,2]].sum()
+
+
+top = (Top_5_prod_com.iloc[0:10, 3].sum)
+lower = (Top_5_prod_com.iloc[11:, 3].sum)
+a =print(top)
+b =print(lower)
+
+listpie = [a,b]
+
+print(listpie)
+
+#prd_valuecheck2 = df_ucd_anal[["production_company", "worlwide_gross_income"]]
+#print(prd_valuecheck2.head())
+#prd_valuechecksrt = prd_valuecheck2.sort_values("worlwide_gross_income", ascending=False)
+#print(prd_valuechecksrt.head())
+#Ten_down_prod_com = prd_valuechecksrt.iloc[11:,0:3]
+#Ten_down_prod_com['Total'] = prd_valuechecksrt.worlwide_gross_income.sum()
+#print(Ten_down_prod_com.head(10))
+
+
+#1new. Top Production Company by top 10 grossing movies
+
+plt.figure(figsize=(13,7))
+plt.title('Distribution of the top 10 Grossing Films  by production company')
+sns.countplot(y = Top_5_prod_com.production_company, palette='Blues')
+plt.xlabel('Releases')
+plt.show()
+plt.close()
+
+#1b. Distribution of value
+
+plt.figure(figsize=(12,6))
+plt.title("Percentation of Netflix Titles that are either Movies or TV Shows")
+g = plt.pie(listpie,explode=(0.025,0.025), labels=['top10','others'], colors=['red','black'],autopct='%1.1f%%', startangle=180)
+plt.show()
+
 
 #1. Production Company by the Amount of the films release
 filtered_prod = df_ucd_anal.set_index('title').production_company.str.split(', ', expand=True).stack().reset_index(level=1, drop=True);
@@ -54,15 +97,30 @@ plt.title('Top 10 Production Companies between 2010-2020')
 plt.xlabel('Titles')
 plt.ylabel('Production Company')
 plt.show()
+plt.close()
+print(filtered_prod.value_counts().index[:10])
+
+
+
+
+
+
+
+
+#1b
+top10prodcompaniesbyvolume = filtered_prod.value_counts().index[:10]
+
+
 
 #2. Top Directors by film in decade
 filtered_directors = df_ucd_anal[df_ucd_anal.director != 'No director provided'].set_index('title').director.str.split(', ', expand=True).stack().reset_index(level=1, drop=True)
+
 plt.figure(figsize=(13,7))
 plt.title('Top 10 Director Based on The Number of Titles')
 sns.countplot(y = filtered_directors, order=filtered_directors.value_counts().index[:10], palette='Blues')
 plt.xlabel('Releases')
 plt.show()
-
+plt.close()
 
 #3. Number of releases per Calender year
 
@@ -87,6 +145,14 @@ ax2.plot(trop_prod_by_yeardf.year, trop_prod_by_yeardf.worlwide_gross_income,col
 ax2.set_ylabel("No. of release",color="blue")
 ax2.set_title("Annual Revuenue & Output by Year")
 plt.show()
+plt.close()
+
+
+worlwide_gross_income = df_ucd_anal.groupby(["production_company"])["worlwide_gross_income"].sum().reset_index()
+worlwide_gross_income_srt = prd_valuecheck.sort_values("worlwide_gross_income", ascending=False)
+print(worlwide_gross_income_srt.head(2))
+#top5filmbyprod= worlwide_gross_income
+#print(top5filmsbyprod.head(5))
 
 
 
