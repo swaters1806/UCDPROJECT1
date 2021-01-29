@@ -130,6 +130,41 @@ ax2.set_title("Annual Revuenue & Output by Year")
 plt.show()
 plt.close()
 
+#lines 135 to 167 using a get url request to pull in a CSV file from Kaggle. Data set no used in end, but code left into demonstrate URL request
+
+#import requests
+#import io
+
+# Username of your GitHub account
+
+# username = 'swaters1806'
+
+# Personal Access Token (PAO) from your GitHub account. Token value changed
+
+# token = 'e8206249ccd0291d06006e8825d28dd869b16b02'
+
+# Creates a re-usable session object with your creds in-built
+
+# github_session = requests.Session()
+# github_session.auth = (username, token)
+
+# Downloading the csv file from your GitHub
+
+# url = "https://raw.githubusercontent.com/dwiknrd/medium-code/master/netflix-eda/netflix_titles.csv"  # Make sure the url is the raw version of the file on GitHub
+# download = github_session.get(url).content
+
+# Reading the downloaded content and making it a pandas dataframe
+
+# df = pd.read_csv(io.StringIO(download.decode('utf-8')))
+
+# Printing out the first 5 rows of the dataframe to make sure everything is good
+
+# print(df.head())
+
+# saving the dataframe
+#df.to_csv('Netflix_data.csv')
+
+# print(df.shape)
 
 
 

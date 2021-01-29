@@ -44,6 +44,16 @@ print(df_top5producers.head(5))
 
 
 
+value_prod = Top_5_prod_com.production_company.value_counts().to_frame().reset_index().rename(columns={"index": "production_company", "WWGross_income_millions":"count", "production_company": "count" })
+print(value_prod.head())
+plt.figure(figsize=(18,7))
+sns.lineplot(data=value_prod, x="production_company", y="count")
+plt.title('Top 5 Production Companies between 2010-2020')
+plt.xlabel('Year')
+plt.ylabel('Number of releases')
+plt.show()
+
+
 
 
 
