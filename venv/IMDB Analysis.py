@@ -8,7 +8,7 @@ import seaborn as sns
 
 ##Low memory used based on Pycharm prompt
 df = pd.read_csv ('IMDb movies1.csv', low_memory=False, sep=',', dtype={"worlwide_gross_income": int})
-dtype={"genre": str, "director": str, "production_company": str, "year": str, "imdb_title_id": str}
+dtype={"genre": str, "director": str, "production_company": str, "year": str}
 print (df)
 
 ##Subset to Noughties decade
@@ -70,8 +70,7 @@ print(top10df.shape)
 top10df['Total'] = top10df.WWGross_income_millions.sum()
 print(top10df.head(10))
 
-#1b. I should of use a dictionary to enable me to append the data to original top10tokeep subset. top3 = ['Lucasfilm', 'Marvel Studios', 'Walt Disney Animation Studios'].
-#top3 = ['Lucasfilm', 'Marvel Studios', 'Walt Disney] could have been be added using .append
+
 
 top13tokeep = ['Universal Pictures', 'Columbia Pictures', 'Warner Bros.',
        'Paramount Pictures', 'Summit Entertainment', 'Twentieth Century Fox',
@@ -112,27 +111,16 @@ plt.xlabel('Titles')
 plt.ylabel('Production Company')
 plt.show()
 plt.close()
-print(filtered_prod.value_counts().index)
-
-
-#2. Top Directors by film in decade
-filtered_directors = df_ucd_anal[df_ucd_anal.director != 'No director provided'].set_index('title').director.str.split(', ', expand=True).stack().reset_index(level=1, drop=True)
-
-plt.figure(figsize=(15,7))
-plt.title('Top 10 Director Based on The Number of Titles')
-sns.countplot(y = filtered_directors, order=filtered_directors.value_counts().index[:10])
-plt.xlabel('Releases')
-plt.show()
-plt.close()
+print(filtered_prod.value_counts().head(10))
 
 
 #3. Number of releases per Calender year
 
 trop_prod_by_yeardf = df_ucd_anal.groupby(["year"])["worlwide_gross_income"].count().reset_index()
-print(trop_prod_by_yeardf.head())
+print(trop_prod_by_yeardf.head(11))
 
 prodcomp_byrevenue = df_ucd_anal.groupby(["year"])["worlwide_gross_income"].sum().reset_index()
-print(prodcomp_byrevenue.head())
+print(prodcomp_byrevenue.head(11))
 
 #3updated. Number of releases per Calender year & Revenue. Two lines on one graph
 # create figure and axis objects with subplots()
@@ -141,7 +129,7 @@ ax.plot(prodcomp_byrevenue.year, prodcomp_byrevenue.worlwide_gross_income, color
 # set x-axis label
 ax.set_xlabel("year")
 # set y-axis label
-ax.set_ylabel("worlwide_gross_income(m)",color="red")
+ax.set_ylabel("worlwide_gross_income(10 Billions)",color="red")
 # twin object for two different y-axis on the sample plot
 ax2=ax.twinx()
 # make a plot with different y-axis using second axis object
@@ -151,7 +139,7 @@ ax2.set_title("Annual Revuenue & Output by Year")
 plt.show()
 plt.close()
 
-#lines 135 to 167 using a get url request to pull in a CSV file from Kaggle. Data set no used in end, but code left into demonstrate URL request
+#lines 155 to 187 using a get url request to pull in a CSV file from Kaggle. Data set no used in end, but code left into demonstrate URL request
 
 #import requests
 #import io
@@ -186,6 +174,16 @@ plt.close()
 #df.to_csv('Netflix_data.csv')
 
 # print(df.shape)
+
+#Lines 191 to 197 uses Pd.merge fucntion. Commented out as not needed.
+
+# dfrating = pd.read_csv('IMDb ratings.csv', low_memory=False, sep=',')
+
+# result = pd.merge(df,
+                 # dfrating[['weighted_average_vote']],
+#  on='imdb_title_id',
+#  how= 'left')
+# result.head()
 
 
 
