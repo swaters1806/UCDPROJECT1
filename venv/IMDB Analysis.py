@@ -135,7 +135,7 @@ ax2.set_title("Annual Revuenue & Output by Year")
 plt.show()
 plt.close()
 
-#lines 155 to 187 using a get url request to pull in a CSV file from Kaggle. Data set no used in end, but code left into demonstrate URL request
+#lines 140 to 170 using a get url request to pull in a CSV file from Kaggle. Data set no used in end, but code left into demonstrate URL request
 
 #import requests
 #import io
@@ -171,7 +171,7 @@ plt.close()
 
 # print(df.shape)
 
-#Lines 191 to 197 uses Pd.merge fucntion. Commented out as not needed.
+#Lines 176 to 182 uses Pd.merge fucntion. Commented out as not needed.
 
 # dfrating = pd.read_csv('IMDb ratings.csv', low_memory=False, sep=',')
 
